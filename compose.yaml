@@ -4,14 +4,33 @@ services:
   web:
     build:
       context: .
-      dockerfile: Dockerfile.python    
-    container_name: py-app-container  
+      dockerfile: Dockerfile.python
+    depends_on: ["db"]
+    container_name: py-app-container
     networks:
       backend:
-        ipv4_address: 172.20.0.5      
+        ipv4_address: 172.20.0.5
     restart: always
 
-#services:
+  db:
+    image: mysql:8
+    container_name: db-mysql-container
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_HOST="%" # it's very important!!!
+    ports:
+      - 3306:3306
+    volumes:
+      - ./dbdata:/var/lib/mysql/
+    networks:
+      backend:
+        ipv4_address: 172.20.0.10
+    restart: always
+    
+
 #  prometheus:
 #    image: prom/prometheus:v2.47.2
 #    container_name: prometheus
