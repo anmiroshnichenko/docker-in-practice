@@ -1,4 +1,6 @@
-#version: '3.8'
+version: '3.8'
+include:
+- ./proxy.yaml
 
 services:
   web:
@@ -6,7 +8,12 @@ services:
       context: .
       dockerfile: Dockerfile.python
     depends_on: ["db"]
-    container_name: py-app-container
+    container_name: py-app
+    environment:
+      - DB_HOST=172.20.0.10
+      - DB_USER=${MYSQL_USER}
+      - DB_PASSWORD=${MYSQL_PASSWORD}
+      - DB_NAME=${MYSQL_DATABASE}
     networks:
       backend:
         ipv4_address: 172.20.0.5
@@ -14,38 +21,21 @@ services:
 
   db:
     image: mysql:8
-    container_name: db-mysql-container
+    container_name: db-mysql
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_ROOT_HOST="%" # it's very important!!!
+      # - MYSQL_ROOT_HOST="%" # it's very important!!!
     ports:
       - 3306:3306
     volumes:
-      - ./dbdata:/var/lib/mysql/
+      - ~/dbdata:/var/lib/mysql/
     networks:
       backend:
         ipv4_address: 172.20.0.10
     restart: always
-    
-
-#  prometheus:
-#    image: prom/prometheus:v2.47.2
-#    container_name: prometheus
-#    command: --web.enable-lifecycle --config.file=/etc/prometheus/prometheus.yml
-#    ports:
-#      - 9090:9090
-#    volumes:
-#      - ./prometheus:/etc/prometheus/
-#      - prometheus-data:/prometheus/
-#    networks:
-#      - backend
-#    restart: always
-
-#volumes:
-#  prometheus-data:
 
 networks:
   backend:
@@ -53,4 +43,4 @@ networks:
     ipam:
       config:
       - subnet: 172.20.0.0/24
-#      - gateway: 172.17.0.1
+
