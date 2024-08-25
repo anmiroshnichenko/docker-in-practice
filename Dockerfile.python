@@ -8,5 +8,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY main.py ./
 
+# .dockerignore test
+#COPY . /app/test  
 
 CMD ["python", "main.py"]
