@@ -34,7 +34,8 @@ See 'snap info docker' for additional versions.
 ## Задача 1
 1. Сделайте в своем github пространстве fork репозитория ```https://github.com/netology-code/shvirtd-example-python/blob/main/README.md```.   
 2. Создайте файл с именем ```Dockerfile.python``` для сборки данного проекта(для 3 задания изучите https://docs.docker.com/compose/compose-file/build/ ). Используйте базовый образ ```python:3.9-slim```. 
-Обязательно используйте конструкцию ```COPY . .``` в Dockerfile. Не забудьте исключить ненужные в имадже файлы с помощью dockerignore. Протестируйте корректность сборки.  
+Обязательно используйте конструкцию ```COPY . .``` в Dockerfile. Не забудьте исключить ненужные в имадже файлы с помощью .dockerignore. Протестируйте корректность сборки.  
+Dockerfile.python
 
 ```
 FROM python:3.9-slim
@@ -45,7 +46,6 @@ COPY main.py ./
 # .dockerignore test
 #COPY . /app/test  
 CMD ["python", "main.py"]
-
 ```
 
 3. (Необязательная часть, *) Изучите инструкцию в проекте и запустите web-приложение без использования docker в venv. (Mysql БД можно запустить в docker run).
@@ -73,7 +73,17 @@ CMD ["python", "main.py"]
 
 - ```db```. image=mysql:8. Контейнер должен работать в bridge-сети с названием ```backend``` и иметь фиксированный ipv4-адрес ```172.20.0.10```. Явно перезапуск сервиса в случае ошибок. Передайте необходимые ENV-переменные для создания: пароля root пользователя, создания базы данных, пользователя и пароля для web-приложения.Обязательно используйте уже существующий .env file для назначения секретных ENV-переменных!
 
-2. Запустите проект локально с помощью docker compose , добейтесь его стабильной работы: команда ```curl -L http://127.0.0.1:8090``` должна возвращать в качестве ответа время и локальный IP-адрес. Если сервисы не стартуют воспользуйтесь командами: ```docker ps -a ``` и ```docker logs <container_name>``` . Если вместо IP-адреса вы получаете ```NULL``` --убедитесь, что вы шлете запрос на порт ```8090```, а не 5000.
+4. Запустите проект локально с помощью docker compose , добейтесь его стабильной работы: команда ```curl -L http://127.0.0.1:8090``` должна возвращать в качестве ответа время и локальный IP-адрес. Если сервисы не стартуют воспользуйтесь командами: ```docker ps -a ``` и ```docker logs <container_name>``` . Если вместо IP-адреса вы получаете ```NULL``` --убедитесь, что вы шлете запрос на порт ```8090```, а не 5000.
+```
+sudo docker compose up  -d
+sudo docker ps -a
+sudo docker compose ps -a
+curl -L http://127.0.0.1:8090
+sudo docker logs py-app --tail 10
+sudo docker compose logs -f --tail 5 web
+sudo docker compose logs --tail 10 web
+```
+![Image alt](https://github.com/anmiroshnichenko/docker-in-practice/blob/main/screenshots/3_1.jpg)
 
 5. Подключитесь к БД mysql с помощью команды ```docker exec <имя_контейнера> mysql -uroot -p<пароль root-пользователя>```(обратите внимание что между ключем -u и логином root нет пробела. это важно!!! тоже самое с паролем) . Введите последовательно команды (не забываем в конце символ ; ): ```show databases; use <имя вашей базы данных(по-умолчанию example)>; show tables; SELECT * from requests LIMIT 10;```.
 
@@ -81,7 +91,7 @@ CMD ["python", "main.py"]
 sudo docker exec -it  db-mysql mysql -uroot -pYtReWq4321
 
 ```
-![Image alt](https://github.com/anmiroshnichenko/docker-in-practice/blob/main/screenshots/3_1.jpg)
+![Image alt](https://github.com/anmiroshnichenko/docker-in-practice/blob/main/screenshots/3_2.jpg)
 
 6. Остановите проект. В качестве ответа приложите скриншот sql-запроса.
 
