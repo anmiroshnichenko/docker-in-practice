@@ -95,6 +95,8 @@ sudo docker exec -it  db-mysql mysql -uroot -pYtReWq4321
 
 6. Остановите проект. В качестве ответа приложите скриншот sql-запроса.
 
+![Image alt](https://github.com/anmiroshnichenko/docker-in-practice/blob/main/screenshots/3_3.jpg)
+
 ## Задача 4
 1. Запустите в Yandex Cloud ВМ (вам хватит 2 Гб Ram).
 2. Подключитесь к Вм по ssh и установите docker.
