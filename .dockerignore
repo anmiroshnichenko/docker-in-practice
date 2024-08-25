@@ -1,0 +1,10 @@
+*.md
+.*
+*.pdf
+.dockerignore
+Dockerfile.python
+LICENSE
+*.yaml
+haproxy
+nginx
+db_data
