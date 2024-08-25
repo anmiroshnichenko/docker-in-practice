@@ -24,6 +24,9 @@ See 'snap info docker' for additional versions.
 ```
 В случае наличия установленного в системе ```docker-compose``` - удалите его.  
 2. Убедитесь что у вас УСТАНОВЛЕН ```docker compose```(без тире) версии не менее v2.24.X, для это выполните команду ```docker compose version```  
+
+![Image alt](https://github.com/anmiroshnichenko/docker-in-practice/blob/main/screenshots/0_1.jpg)
+
 ###  **Своё решение к задачам оформите в вашем GitHub репозитории!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!**
 
 ---
@@ -78,7 +81,7 @@ CMD ["python", "main.py"]
 sudo docker exec -it  db-mysql mysql -uroot -pYtReWq4321
 
 ```
-![Image alt]()
+![Image alt](https://github.com/anmiroshnichenko/docker-in-practice/blob/main/screenshots/3_1.jpg)
 
 6. Остановите проект. В качестве ответа приложите скриншот sql-запроса.
 
