@@ -115,6 +115,25 @@ sudo docker exec -it  db-mysql mysql -uroot -pYtReWq4321
 Скачайте docker образ ```hashicorp/terraform:latest``` и скопируйте бинарный файл ```/bin/terraform``` на свою локальную машину, используя dive и docker save.
 Предоставьте скриншоты  действий .
 
+```
+sudo docker pull  hashicorp/terraform:latest
+sudo docker images
+sudo docker run --rm -it -v /var/run/docker.sock:/var/run/docker.sock wagoodman/dive:latest hashicorp/terraform
+# Digest: sha256:2e4c7a391cbe470bdd510791978859db7e09e412dc2587c5b27451aef764cf1b
+sudo docker save -o /tmp/image_hashicorp.tar.gz hashicorp/terraform 
+sudo tar xf /tmp/image_hashicorp.tar.gz
+cd /tmp/ &&  ls
+cd blobs/sha256/ && ls
+sudo tar xf 2e4c7a391cbe470bdd510791978859db7e09e412dc2587c5b27451aef764cf1b  &&  ls 
+ls -la bin/
+```
+![Image alt](https://github.com/anmiroshnichenko/docker-in-practice/blob/main/screenshots/6_1.jpg)
+![Image alt](https://github.com/anmiroshnichenko/docker-in-practice/blob/main/screenshots/6_2.jpg)
+![Image alt](https://github.com/anmiroshnichenko/docker-in-practice/blob/main/screenshots/6_3.jpg)
+
+
+
+
 ## Задача 6.1
 Добейтесь аналогичного результата, используя docker cp.  
 Предоставьте скриншоты  действий .
