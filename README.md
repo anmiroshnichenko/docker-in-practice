@@ -147,6 +147,15 @@ sudo docker cp terraform:/bin/terraform  /tmp   && ls -la  /tmp/  | grep terrafo
 Предложите способ извлечь файл из контейнера, используя только команду docker build и любой Dockerfile.  
 Предоставьте скриншоты  действий .
 
+Рузультатом сборки будет экспорт всех файлов в  директорию  image_files
+
+```
+sudo docker  build -o image_files  .
+```
+![Image alt](https://github.com/anmiroshnichenko/docker-in-practice/blob/main/screenshots/6.2_1.jpg)
+![Image alt](https://github.com/anmiroshnichenko/docker-in-practice/blob/main/screenshots/6.2_2.jpg)
+
+
 ## Задача 7 (***)
 Запустите ваше python-приложение с помощью runC, не используя docker или containerd.  
 Предоставьте скриншоты  действий .
