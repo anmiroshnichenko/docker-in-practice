@@ -131,12 +131,17 @@ ls -la bin/
 ![Image alt](https://github.com/anmiroshnichenko/docker-in-practice/blob/main/screenshots/6_2.jpg)
 ![Image alt](https://github.com/anmiroshnichenko/docker-in-practice/blob/main/screenshots/6_3.jpg)
 
-
-
-
 ## Задача 6.1
 Добейтесь аналогичного результата, используя docker cp.  
 Предоставьте скриншоты  действий .
+
+```
+sudo docker images
+sudo docker run  -d  --name=terraform  hashicorp/terraform
+sudo docker ps -a 
+sudo docker cp terraform:/bin/terraform  /tmp   && ls -la  /tmp/  | grep terraform
+```
+![Image alt](https://github.com/anmiroshnichenko/docker-in-practice/blob/main/screenshots/6.1_1.jpg)
 
 ## Задача 6.2 (**)
 Предложите способ извлечь файл из контейнера, используя только команду docker build и любой Dockerfile.  
