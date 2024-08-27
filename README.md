@@ -35,7 +35,7 @@ See 'snap info docker' for additional versions.
 1. Сделайте в своем github пространстве fork репозитория ```https://github.com/netology-code/shvirtd-example-python/blob/main/README.md```.   
 2. Создайте файл с именем ```Dockerfile.python``` для сборки данного проекта(для 3 задания изучите https://docs.docker.com/compose/compose-file/build/ ). Используйте базовый образ ```python:3.9-slim```. 
 Обязательно используйте конструкцию ```COPY . .``` в Dockerfile. Не забудьте исключить ненужные в имадже файлы с помощью .dockerignore. Протестируйте корректность сборки.  
-Dockerfile.python
+Dockerfile.python:
 
 ```
 FROM python:3.9-slim
@@ -47,10 +47,29 @@ COPY main.py ./
 #COPY . /app/test  
 CMD ["python", "main.py"]
 ```
-![Image alt](https://github.com/anmiroshnichenko/docker-in-practice/blob/main/screenshots/1.jpg)
 
 3. (Необязательная часть, *) Изучите инструкцию в проекте и запустите web-приложение без использования docker в venv. (Mysql БД можно запустить в docker run).
+ Изменил .env:
+ ```
+MYSQL_ROOT_PASSWORD="YtReWq4321"
 
+MYSQL_DATABASE="virtd"
+MYSQL_USER="app"
+MYSQL_PASSWORD="QwErTy1234"
+
+DB_USER=${MYSQL_USER}
+DB_PASSWORD=${MYSQL_PASSWORD}
+DB_NAME=${MYSQL_DATABASE}
+ ```
+Изменил main.py:
+```
+from flask import Flask
+from flask import request
+import os
+from dotenv import load_dotenv 
+load_dotenv()  # take environment variables from .env.
+import mysql.connector
+from datetime import datetime
 ```
 git clone https://github.com/netology-code/shvirtd-example-python.git
 cd shvirtd-example-python
@@ -58,13 +77,82 @@ sudo apt install python3.8-venv
 python3 -m venv venv
 . venv/bin/activate
 pip install -r requirements.txt
-docker run -d  --network='backend' --hostname='db' -v './db_data:/var/lib/mysql' -e \
+docker run -d   -v './db_data:/var/lib/mysql' -e \
 	'MYSQL_ROOT_PASSWORD=YtReWq4321' -e 'MYSQL_DATABASE=virtd' -e 'MYSQL_USER=app' -e \
 	'MYSQL_PASSWORD=QwErTy1234' -p 3306:3306 --name db-mysql   mysql:8
+pip install python-dotenv # пакет читает  файл .env, и загружает необходимые  приложению переменные среды
 python main.py
 ``` 
+![Image alt](https://github.com/anmiroshnichenko/docker-in-practice/blob/main/screenshots/1.jpg)
 
 4. (Необязательная часть, *) По образцу предоставленного python кода внесите в него исправление для управления названием используемой таблицы через ENV переменную.
+### Изменил main.py:
+```
+from flask import Flask
+from flask import request
+import os
+from dotenv import load_dotenv 
+load_dotenv()  # take environment variables from .env.
+import mysql.connector
+from datetime import datetime
+app = Flask(__name__)
+db_host=os.environ.get('DB_HOST')
+db_user=os.environ.get('DB_USER')
+db_password=os.environ.get('DB_PASSWORD')
+db_database=os.environ.get('DB_NAME')
+db_datatable=os.environ.get('DB_TABLE')
+print(f'Используем таблицу: {db_datatable}')
+# Подключение к базе данных MySQL
+db = mysql.connector.connect(
+host=db_host,
+user=db_user,
+password=db_password,
+database=db_database,
+autocommit=True )
+cursor = db.cursor()
+# SQL-запрос для создания таблицы в БД
+create_table_query = f"""
+CREATE TABLE IF NOT EXISTS {db_database}.{db_datatable}  (
+id INT AUTO_INCREMENT PRIMARY KEY,
+request_date DATETIME,
+request_ip VARCHAR(255)
+)
+"""
+cursor.execute(create_table_query)
+
+@app.route('/')
+def index():
+    # Получение IP-адреса пользователя
+    ip_address = request.headers.get('X-Forwarded-For')
+
+    # Запись в базу данных
+    now = datetime.now()
+    current_time = now.strftime("%Y-%m-%d %H:%M:%S")
+    query = f"INSERT INTO {db_database}.{db_datatable}  (request_date, request_ip) VALUES (%s, %s)"
+    values = (current_time, ip_address)
+    cursor.execute(query, values)
+    db.commit()
+
+    return f'TIME: {current_time}, IP: {ip_address}'
+
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0')
+```
+### Добавил переременную DB_TABLE в .env:
+
+```
+MYSQL_ROOT_PASSWORD="YtReWq4321"
+MYSQL_DATABASE="virtd"
+MYSQL_USER="app"
+MYSQL_PASSWORD="QwErTy1234"
+DB_USER=${MYSQL_USER}
+DB_PASSWORD=${MYSQL_PASSWORD}
+DB_NAME=${MYSQL_DATABASE}
+DB_TABLE=new_table
+```
+![Image alt](https://github.com/anmiroshnichenko/docker-in-practice/blob/main/screenshots/1_4.jpg)
+![Image alt](https://github.com/anmiroshnichenko/docker-in-practice/blob/main/screenshots/1_4_1.jpg)
+
 ---
 ### ВНИМАНИЕ!
 !!! В процессе последующего выполнения ДЗ НЕ изменяйте содержимое файлов в fork-репозитории! Ваша задача ДОБАВИТЬ 5 файлов: ```Dockerfile.python```, ```compose.yaml```, ```.gitignore```, ```.dockerignore```,```bash-скрипт```. Если вам понадобилось внести иные изменения в проект - вы что-то делаете неверно!
