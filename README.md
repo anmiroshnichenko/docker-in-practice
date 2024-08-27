@@ -61,6 +61,7 @@ docker run -d  --network='backend' --hostname='db' -v './db_data:/var/lib/mysql'
 	'MYSQL_ROOT_PASSWORD=YtReWq4321' -e 'MYSQL_DATABASE=virtd' -e 'MYSQL_USER=app' -e \
 	'MYSQL_PASSWORD=QwErTy1234' -p 3306:3306 --name db-mysql   mysql:8
 python main.py
+``` 
 
 4. (Необязательная часть, *) По образцу предоставленного python кода внесите в него исправление для управления названием используемой таблицы через ENV переменную.
 ---
