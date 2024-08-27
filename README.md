@@ -71,6 +71,7 @@ load_dotenv()  # take environment variables from .env.
 import mysql.connector
 from datetime import datetime
 ```
+```
 git clone https://github.com/netology-code/shvirtd-example-python.git
 cd shvirtd-example-python
 sudo apt install python3.8-venv
