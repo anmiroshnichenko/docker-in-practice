@@ -50,6 +50,18 @@ CMD ["python", "main.py"]
 
 3. (Необязательная часть, *) Изучите инструкцию в проекте и запустите web-приложение без использования docker в venv. (Mysql БД можно запустить в docker run).
 
+```
+git clone https://github.com/netology-code/shvirtd-example-python.git
+cd shvirtd-example-python
+sudo apt install python3.8-venv
+python3 -m venv venv
+. venv/bin/activate
+pip install -r requirements.txt
+docker run -d  --network='backend' --hostname='db' -v './db_data:/var/lib/mysql' -e \
+	'MYSQL_ROOT_PASSWORD=YtReWq4321' -e 'MYSQL_DATABASE=virtd' -e 'MYSQL_USER=app' -e \
+	'MYSQL_PASSWORD=QwErTy1234' -p 3306:3306 --name db-mysql   mysql:8
+python main.py
+
 4. (Необязательная часть, *) По образцу предоставленного python кода внесите в него исправление для управления названием используемой таблицы через ENV переменную.
 ---
 ### ВНИМАНИЕ!
