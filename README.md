@@ -63,6 +63,31 @@ CMD ["python", "main.py"]
 4. Просканируйте образ на уязвимости.
 5. В качестве ответа приложите отчет сканирования.
 
+```
+curl -sSL https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash
+yc init
+yc config profile list
+yc config profile  get test 
+yc container registry create --name  test
+yc container registry configure-docker
+cat /home/miroshnichenko_an/.docker/config.json
+docker build -t py-app  -f Dockerfile.python .
+docker images
+docker tag py-app:latest  cr.yandex/crp1f4c1p1705f2hsk89/py-app:hello
+docker push cr.yandex/crp1f4c1p1705f2hsk89/py-app:hello
+yc container image list --repository-name=crp1f4c1p1705f2hsk89/py-app
+yc container image scan crpait1ss1f39hrnbii5 
+yc container image list-vulnerabilities --scan-result-id=cheb6gtta2j5gkeqlreq
+yc container image list-scan-results --repository-name=crp1f4c1p1705f2hsk89/py-app
+```
+![Image alt](https://github.com/anmiroshnichenko/docker-in-practice/blob/main/screenshots/2_1.jpg)
+![Image alt](https://github.com/anmiroshnichenko/docker-in-practice/blob/main/screenshots/2_2.jpg)
+![Image alt](https://github.com/anmiroshnichenko/docker-in-practice/blob/main/screenshots/2_3.jpg)
+![Image alt](https://github.com/anmiroshnichenko/docker-in-practice/blob/main/screenshots/2_4.jpg)
+![Image alt](https://github.com/anmiroshnichenko/docker-in-practice/blob/main/screenshots/2_5.jpg)
+![Image alt](https://github.com/anmiroshnichenko/docker-in-practice/blob/main/screenshots/2_6.jpg)
+![Image alt](https://github.com/anmiroshnichenko/docker-in-practice/blob/main/screenshots/2_7.jpg)
+
 ## Задача 3
 1. Изучите файл "proxy.yaml"
 2. Создайте в репозитории с проектом файл ```compose.yaml```. С помощью директивы "include" подключите к нему файл "proxy.yaml".
