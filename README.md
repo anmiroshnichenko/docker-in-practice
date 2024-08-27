@@ -47,6 +47,7 @@ COPY main.py ./
 #COPY . /app/test  
 CMD ["python", "main.py"]
 ```
+![Image alt](https://github.com/anmiroshnichenko/docker-in-practice/blob/main/screenshots/1.jpg)
 
 3. (Необязательная часть, *) Изучите инструкцию в проекте и запустите web-приложение без использования docker в venv. (Mysql БД можно запустить в docker run).
 
