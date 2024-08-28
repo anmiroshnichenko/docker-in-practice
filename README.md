@@ -252,7 +252,25 @@ docker compose ps -a
 2. Протестируйте ручной запуск
 3. Настройте выполнение скрипта раз в 1 минуту через cron, crontab или systemctl timer. Придумайте способ не светить логин/пароль в git!!
 4. Предоставьте скрипт, cron-task и скриншот с несколькими резервными копиями в "/opt/backup"
-
+Создал  файл /op/dump_mysql.sh:    
+```
+#!/bin/bash
+ docker run \
+    --rm --entrypoint "" \
+    -v /opt/backup:/backup \
+    --link="container:db-mysql" \
+    --network="docker-in-practice_backend" \
+    schnitzler/mysqldump \
+    mysqldump --opt -h db -u root -p"YtReWq4321" "--result-file=/backup/dump_$(date +%Y.%m.%d-%H.%M.%S).sql" virtd   > /dev/null 2>&1
+```
+```
+sudo crontab -u root -e
+sudo cat /var/log/syslog | grep CRON
+ls -la /opt/backup
+```
+![Image alt](https://github.com/anmiroshnichenko/docker-in-practice/blob/main/screenshots/5_1.jpg)
+![Image alt](https://github.com/anmiroshnichenko/docker-in-practice/blob/main/screenshots/5_2.jpg)
+ 
 ## Задача 6
 Скачайте docker образ ```hashicorp/terraform:latest``` и скопируйте бинарный файл ```/bin/terraform``` на свою локальную машину, используя dive и docker save.
 Предоставьте скриншоты  действий .
