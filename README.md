@@ -261,7 +261,10 @@ RUN apk add --no-cache \
     tzdata
 ENTRYPOINT ["crond", "-f"]
 ``` 
-### Выполнил сборку командой: ```sudo docker build -t schnitzler/mysqldump .```
+### Выполнил сборку командой: 
+```
+sudo docker build -t schnitzler/mysqldump .
+```
 
 ![Image alt](https://github.com/anmiroshnichenko/docker-in-practice/blob/main/screenshots/5_0.jpg)
 
