@@ -252,7 +252,20 @@ docker compose ps -a
 2. Протестируйте ручной запуск
 3. Настройте выполнение скрипта раз в 1 минуту через cron, crontab или systemctl timer. Придумайте способ не светить логин/пароль в git!!
 4. Предоставьте скрипт, cron-task и скриншот с несколькими резервными копиями в "/opt/backup"
-Создал  файл /op/dump_mysql.sh:    
+### Создал Dockerfile  для  создания образа schnitzler/mysqldump
+```
+FROM alpine:3.18
+RUN apk add --no-cache mysql-client mariadb-connector-c
+RUN apk add --no-cache \
+    mysql-client \
+    tzdata
+ENTRYPOINT ["crond", "-f"]
+``` 
+### Выполнил сборку командой: ```sudo docker build -t schnitzler/mysqldump .```
+
+![Image alt](https://github.com/anmiroshnichenko/docker-in-practice/blob/main/screenshots/5_0.jpg)
+
+### Создал  файл /opt/dump_mysql.sh:    
 ```
 #!/bin/bash
  docker run \
