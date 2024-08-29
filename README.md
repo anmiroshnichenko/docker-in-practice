@@ -234,7 +234,7 @@ sudo docker exec -it  db-mysql mysql -uroot -pYtReWq4321
 
 6. В качестве ответа повторите  sql-запрос и приложите скриншот с данного сервера, bash-скрипт и ссылку на fork-репозиторий.
 
-Написал bash-скрипт  run_application.sh  для установки docker и запуска проекта:
+Написал bash-скрипт ```run_application.sh```  для установки docker и запуска проекта:
 ```
 #!/bin/bash
 # Add Docker's official GPG key:
