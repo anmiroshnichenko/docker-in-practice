@@ -240,7 +240,7 @@ newgrp docker
 docker context create remote-machine --docker "host=ssh://miroshnichenko@89.169.151.126"
 docker  context  use remote-machine
 docker  context ls
-docker  context  rm remote-machineS
+docker  context  rm remote-machine
 
 ```
 ![Image alt](https://github.com/anmiroshnichenko/docker-in-practice/blob/main/screenshots/4_5_1.jpg)
