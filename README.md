@@ -231,6 +231,18 @@ sudo docker exec -it  db-mysql mysql -uroot -pYtReWq4321
 3. Напишите bash-скрипт, который скачает ваш fork-репозиторий в каталог /opt и запустит проект целиком.
 4. Зайдите на сайт проверки http подключений, например(или аналогичный): ```https://check-host.net/check-http``` и запустите проверку вашего сервиса ```http://<внешний_IP-адрес_вашей_ВМ>:8090```. Таким образом трафик будет направлен в ingress-proxy. ПРИМЕЧАНИЕ: Приложение весьма вероятно упадет под нагрузкой, но успеет обработать часть запросов - этого достаточно.
 5. (Необязательная часть) Дополнительно настройте remote ssh context к вашему серверу. Отобразите список контекстов и результат удаленного выполнения ```docker ps -a```
+```
+# на Yandex Cloud ВМ
+sudo groupadd docker
+sudo usermod -aG docker $USER
+newgrp docker
+# на локальной ВМ
+docker context create remote-machine --docker "host=ssh://miroshnichenko@89.169.151.126"
+docker  context  use remote-machine
+docker  context ls
+
+```
+![Image alt](https://github.com/anmiroshnichenko/docker-in-practice/blob/main/screenshots/4_5_1.jpg)
 
 6. В качестве ответа повторите  sql-запрос и приложите скриншот с данного сервера, bash-скрипт и ссылку на fork-репозиторий.
 
